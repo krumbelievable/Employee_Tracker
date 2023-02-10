@@ -1,9 +1,10 @@
 const db = require('./db/index');
-const inquirer = require('inquirer'); // Here I call what I need to run the app, db which is my database, inquirer and consoletable.
-const consoleTable = require('console.table');
+// brings in inquirer which will help run our databse
+const inquirer = require('inquirer');
 
 init();
 
+// intro screen
 function init() {
 	console.log(' ');
 	console.log('******************************');
@@ -13,48 +14,50 @@ function init() {
 	console.log('******************************');
 	console.log(' ');
 
+	// first prompt for the user
 	inquirer
 		.prompt([
 			{
 				type: 'list',
-				name: 'userChoice',
-				message: 'What would you like to do?',
+				name: 'startMenu',
+				message: 'What action would you like to perform?',
 				choices: [
 					'Add Employee',
-					'View All Employees',
 					'Update Employee Role',
-					'View All Roles',
+					'View Employees',
 					'Add Role',
-					'View All Departments',
+					'View All Roles',
 					'Add Department',
+					'View All Departments',
 				],
 			},
 		])
 		.then((data) => {
 			const { userChoice } = data;
-			switch (
-				userChoice // switch statement for all of my choices.
-			) {
+
+			// I utilize a switch to catch all the user choices
+
+			switch (userChoice) {
 				case 'Add Employee':
 					addEmployee();
-					break;
-				case 'View All Employees':
-					allEmployees();
 					break;
 				case 'Update Employee Role':
 					employeeRole();
 					break;
-				case 'View All Roles':
-					allRoles();
+				case 'View Employees':
+					allEmployees();
 					break;
 				case 'Add Role':
 					addRole();
 					break;
-				case 'View All Departments':
-					allDepartments();
+				case 'View All Roles':
+					allRoles();
 					break;
 				case 'Add Department':
 					addDepartment();
+					break;
+				case 'View All Departments':
+					allDepartments();
 					break;
 				default:
 					break;
@@ -65,12 +68,13 @@ function init() {
 		});
 }
 
-//here i use async and await to call my database for all aspects of my database that need to be called.
+// creates an Employee, uses async statments to no clog event flow
+
 const addEmployee = async () => {
 	const [roles] = await db.allRoles();
 	const [employees] = await db.allEmployees();
 
-	// here I am maping through the different employees and roles to pull them all.
+	// grabs all the choices for an eployee usign a map function
 	const roleChoices = roles.map(({ id, role_title }) => ({
 		name: role_title,
 		value: id,
@@ -83,27 +87,29 @@ const addEmployee = async () => {
 
 	managerChoices.unshift({ name: 'None', value: null });
 
+	// propmots for creating an employee
+
 	let answers = await inquirer.prompt([
 		{
 			type: 'input',
 			name: 'first_name',
-			message: 'What is employees first name?',
+			message: 'First name of Employee.',
 		},
 		{
 			type: 'input',
 			name: 'last_name',
-			message: 'What is employees last name?',
+			message: 'Last name of Employee.',
 		},
 		{
 			type: 'list',
 			name: 'role_id',
-			message: 'What role is the employee?',
+			message: 'Role of the Employee.',
 			choices: roleChoices,
 		},
 		{
 			type: 'list',
 			name: 'manager_id',
-			message: 'Who is the manager of the employee?',
+			message: 'Manager of Employee',
 			choices: managerChoices,
 		},
 	]);
@@ -114,14 +120,14 @@ const addEmployee = async () => {
 	init();
 };
 
+// Grabs all employees to be used by other funcitons
 const allEmployees = () => {
-	// This db. is used throughout my app to call what i need from my database.
 	db.allEmployees().then(([data]) => {
 		console.table(data);
 	});
 	init();
 };
-
+// Changes employee role
 const employeeRole = async () => {
 	const [employees] = await db.allEmployees();
 	const [roles] = await db.allRoles();
@@ -136,6 +142,7 @@ const employeeRole = async () => {
 		value: id,
 	}));
 
+	// variable to hold changes role request prompts
 	let answers = await inquirer.prompt([
 		{
 			type: 'list',
@@ -157,6 +164,7 @@ const employeeRole = async () => {
 	init();
 };
 
+// Grabs all employees roles to be used by other funcitons
 const allRoles = () => {
 	db.allRoles().then(([data]) => {
 		console.table(data);
@@ -164,30 +172,31 @@ const allRoles = () => {
 	init();
 };
 
+// adds employee roles
 const addRole = async () => {
+	// Allows the addRole function access to an array of departments
 	const [departments] = await db.allDepartments();
 
-	// This is called to pull my departments for my add role function.
 	const departmentChoice = departments.map(({ id, department_name }) => ({
 		name: department_name,
 		value: id,
 	}));
-
+	// answers for role assignment
 	let answers = await inquirer.prompt([
 		{
 			type: 'input',
 			name: 'role_title',
-			message: 'What is the new role you would like to add?',
+			message: 'Role?',
 		},
 		{
 			type: 'input',
 			name: 'role_salary',
-			message: 'What is the roles salary?',
+			message: 'Salary?',
 		},
 		{
 			type: 'list',
 			name: 'department_id',
-			message: 'What department is the role in?',
+			message: 'Department?',
 			choices: departmentChoice,
 		},
 	]);
@@ -198,6 +207,7 @@ const addRole = async () => {
 	init();
 };
 
+// Grabs all departments to be used by other funcitons
 const allDepartments = () => {
 	db.allDepartments().then(([data]) => {
 		console.table(data);
@@ -205,6 +215,7 @@ const allDepartments = () => {
 	init();
 };
 
+//adds department
 const addDepartment = async () => {
 	let answers = await inquirer.prompt([
 		{

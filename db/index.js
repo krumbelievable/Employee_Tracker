@@ -1,8 +1,9 @@
-const connection = require('./connection.js'); // I call the connecton here.
+// Required to connect teh database to the server
+const connection = require('./connection.js');
 
+// the class of db holds all the queries that need to be made to the database from the user
 class db {
 	constructor(connection) {
-		// here I create a class that holds all of my .query that i need to pull from the database.
 		this.connection = connection;
 	}
 
@@ -50,4 +51,5 @@ class db {
 	}
 }
 
-module.exports = new db(connection); // Exporting my database connection so that it connects to the inquire questions.
+// Needs to be exported to be accessed elsewhere
+module.exports = new db(connection);

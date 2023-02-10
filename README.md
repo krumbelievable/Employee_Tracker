@@ -14,19 +14,19 @@ SO THAT I can organize and plan my business
 
 # Description
 
-- The application utilizes mySQL, node.js and inqure to create a company database.
-- The application does not have a page and instead utilizes the terminal to show and update the database.
-- The application utilizes inquire to show prompts and through choosing the prompts you can update the database and to show the tables within the database.
-- The database is seeded through mySQL and can be accessed from both node.js and by going into mySQL in the terminal.
-- The database shows employees, their departments, their roles, their managers and their salaries and can be updated through the terminal.
+- This applications uses database technologies to establish a company database.
+- This application is for local terminal use only. There is no client facing side.
+- Utlilizing inquite, the paplication shows prompts to guide the user through populating, editing, or viewing the database.
+- The seeded database can be accessed through node.js and mySQL.
+- This databse shows individual employees, where in the company they work, their individual roles, their supierors, and their pay.
 
 # Technologies
 
-- Javascript
 - Node.js
-- Inquire
-- mySQL
+- Javascript
 - Console.table
+- mySQL
+- Inquire
 
 # Screenshot
 
