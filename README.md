@@ -30,4 +30,4 @@ SO THAT I can organize and plan my business
 
 # Screenshot
 
-![Alt text](./Screenshot/Employee_Database%20Screenshot.png)
+![Alt text](./Screenshot/MyTracker.JPG)
